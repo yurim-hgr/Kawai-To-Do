@@ -31,7 +31,7 @@ export default class App extends React.Component {
     if(!loadedToDos) {
       return <AppLoading />;
     }
-    return (
+    return ( 
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.title}>Kawai To Do</Text>
@@ -47,7 +47,9 @@ export default class App extends React.Component {
             onSubmitEditing= {this._addToDos}
           />
             <ScrollView contentContainerStyle={styles.toDos}>
-              {Object.values(toDos).map(toDo => <ToDo key={toDo.id}{...toDo} />)}
+              {Object.values(toDos).map(toDo => (
+                <ToDo key={toDo.id}{...toDo} deleteToDo={this._deleteToDo} />
+              ))}
             </ScrollView>
         </View>
       </View>
@@ -88,9 +90,17 @@ export default class App extends React.Component {
       });
     }
   };
-  _deleteToDo= (id) => {
-    this.setState()
-  }
+  _deleteToDo = (id) => {
+    this.setState(prevState => {
+      const toDos = prevState.toDos;
+      delete toDos[id];
+      const newState = {
+        ...prevState,
+        ...toDos
+      };
+      return { ...newState};
+    });
+  };
 }
 
  
